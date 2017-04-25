@@ -18,23 +18,39 @@ class Building{
         self.Elevators = [Elevator]()
     }
     
+    init(building: [String: Any]) {
+        self.Floors = [Int:Floor]()
+        self.Elevators = [Elevator]()
+        let floors = building["floors"] as? [[String: Any]]
+        let elevators = building["elevators"] as? [[String: Any]]
+        for e in elevators!{
+            let elevator = Elevator(elevator: e)
+            self.Elevators.append(elevator!)
+        }
+ 
+        for f in floors!{
+            let floor = Floor(floor: f)
+            self.Floors[floor.FloorId] = floor
+        }
+    }
+    
     func loadSampleData(){
-
         
-        let elevator1 = Elevator(name: "Main", doorsOpen: false, direction: false, currentFloor: 1, status: "none")
-        let elevator2 = Elevator(name: "Service", doorsOpen: false, direction: true, currentFloor: 2, status: "none")
+        
+        let elevator1 = Elevator(elevatorId: 1, name: "Main", doorsOpen: false, direction: false, currentFloor: 1, status: "none")
+        let elevator2 = Elevator(elevatorId:2, name: "Service", doorsOpen: false, direction: true, currentFloor: 2, status: "none")
         
         self.Elevators.append(elevator1!)
         self.Elevators.append(elevator2!)
         
         for i in 1...5 {
-            let f = Floor(number: i, title: "\(i)");
+            let f = Floor(FloorId: i, Title: "\(i)");
             self.Floors[i] = f
             for elevator in self.Elevators{
-                elevator.addFloorToFloors(floor: f, upStatus: false, downStatus: false)
+                f.addBankToFloors(ElevatorId: elevator.ElevatorId, upStatus: false, downStatus: false)
             }
         }
     }
-
+    
     
 }

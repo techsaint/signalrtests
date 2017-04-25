@@ -1,0 +1,6 @@
+framework module Pods_ElevatorAction {
+  umbrella header "Pods-ElevatorAction-umbrella.h"
+
+  export *
+  module * { export * }
+}
