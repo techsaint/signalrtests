@@ -22,4 +22,12 @@ class Bank{
         self.DownStatus = DownStatus
     }
     
+    init(bank: [String: Any]) {
+        self.FloorId = bank["FloorId"] as! Int
+        self.ElevatorId = bank["ElevatorId"] as! Int
+        self.UpStatus = bank["UpStatus"] as! Bool
+        self.DownStatus = bank["DownStatus"] as! Bool
+    }
+
+    
 }

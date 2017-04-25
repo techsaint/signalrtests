@@ -9,23 +9,26 @@
 import UIKit
 import SwiftR
 
+/*extension Notification.Name {
+        static let reload = Notification.Name("reload")
+    } */
+
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource
 {
 
         
     @IBOutlet weak var tblMain: UITableView!
+    @IBOutlet weak var elevatorTableView: UITableView!
     var building = Building()
     let upArrow = UIImage(named: "upArrow")
     let downArrow = UIImage(named: "downArrow")
- 
-    @IBOutlet weak var sendButton: UIButton!
-    @IBOutlet weak var messageTextField: UITextField!
-    @IBOutlet weak var chatTextView: UITextView!
+    
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var startButton: UIButton!
     
     var elevatorHub: Hub!
     var connection: SignalR!
+    
     
     
     @IBAction func sendMessage(_ sender: AnyObject?) {
@@ -64,19 +67,26 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         super.viewDidLoad()
         tblMain.delegate = self
         tblMain.dataSource = self
+        elevatorTableView.delegate = self
+        elevatorTableView.dataSource = self
+        //NotificationCenter.default.addObserver(self, selector: #selector(reloadTableData), name: .reload, object: nil)
         
-        connection = SignalR("https://otistestsignalrhubtest.azurewebsites.net")
+        connection = SignalR("https://camelbacksignalrtest.azurewebsites.net")
         //connection.useWKWebView = true
         //connection.transport = .serverSentEvents
         connection.signalRVersion = .v2_2_0
         
-        elevatorHub = Hub("otisHub")
+        elevatorHub = Hub("camelBackHub")
         elevatorHub.on("receivedTelemetry") { [weak self] args in
             let m: AnyObject = args![0] as AnyObject
+            print(m)
             let d: [String: Any] = m as! [String: Any]
             let b = Building(building: d)
-            print(b)
-            self?.tblMain.reloadData()
+            self?.building = b
+            DispatchQueue.main.async {
+                self?.tblMain.reloadData()
+                self?.elevatorTableView.reloadData()
+            }
             
         }
         connection.addHub(elevatorHub)
@@ -86,13 +96,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         connection.starting = { [weak self] in
             self?.statusLabel.text = "Starting..."
             self?.startButton.isEnabled = false
-            self?.sendButton.isEnabled = false
         }
         
         connection.reconnecting = { [weak self] in
             self?.statusLabel.text = "Reconnecting..."
             self?.startButton.isEnabled = false
-            self?.sendButton.isEnabled = false
         }
         
         connection.connected = { [weak self] in
@@ -100,21 +108,19 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             self?.statusLabel.text = "Connected"
             self?.startButton.isEnabled = true
             self?.startButton.setTitle("Start", for: UIControlState.normal )
-            self?.sendButton.isEnabled = true
+
         }
         
         connection.reconnected = { [weak self] in
             self?.statusLabel.text = "Reconnected. Connection ID: \(self!.connection.connectionID!)"
             self?.startButton.isEnabled = true
             self?.startButton.setTitle("Stop", for: UIControlState.normal)
-            self?.sendButton.isEnabled = true
         }
         
         connection.disconnected = { [weak self] in
             self?.statusLabel.text = "Disconnected"
             self?.startButton.isEnabled = true
             self?.startButton.setTitle("Start", for: UIControlState.normal)
-            self?.sendButton.isEnabled = false
         }
         
         connection.connectionSlow = { print("Connection slow...") }
@@ -137,7 +143,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         
         
-        building.loadSampleData()
+        //building.loadSampleData()
         // Do any additional setup after loading the view, typically from a nib.
     }
 
@@ -147,38 +153,74 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cellIdentifier = "ElevatorTableViewCell"
         
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? ElevatorTableViewCell else {
-            fatalError("The dequeued cell is not an instance of ElevatorTableViewCell.")
-        }
-        let elevator = building.Elevators[indexPath.row]
+        if (tableView === self.tblMain) {
         
-        cell.nameLabel.text = elevator.Name
-        cell.floorLabel.text = building.Floors[elevator.CurrentFloor]?.Title
-        if elevator.Direction != nil{
-            if elevator.Direction == true {
-                cell.directionImageView.image = self.upArrow
+            let cellIdentifier = "ElevatorTableViewCell"
+        
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? ElevatorTableViewCell else
+            {
+                fatalError("The dequeued cell is not an instance of ElevatorTableViewCell.")
+            }
+            let elevator = building.Elevators[indexPath.row]
+        
+            cell.nameLabel.text = elevator.Name
+            cell.floorLabel.text = building.Floors[elevator.CurrentFloor]?.Title
+            if elevator.Direction != nil{
+                if elevator.Direction == true {
+                    cell.directionImageView.image = self.upArrow
+                }
+                else {
+                    cell.directionImageView.image = self.downArrow
+                }
+            }
+            if elevator.DoorsOpen {
+                cell.doorOpenLabel.text = "Doors open"
             }
             else {
-                cell.directionImageView.image = self.downArrow
+                cell.doorOpenLabel.text = "Doors closed"
             }
-        }
-        if elevator.DoorsOpen {
-            cell.doorOpenLabel.text = "Doors open"
+        
+            cell.backgroundColor = UIColor.lightGray
+        
+            return cell
         }
         else {
-            cell.doorOpenLabel.text = "Doors closed"
+            let cellIdentifier = "LiveFloorTableViewCell"
+            
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? LiveFloorTableViewCell else
+            {
+                fatalError("The dequeued cell is not an instance of LiveFloorTableViewCell.")
+            }
+            let floor = building.Floors[(building.Floors.count - (indexPath.row + 1))]
+            
+            cell.floorNameLabel.text = (floor?.Title)!
+            cell.Elevator1CallControl.upCalled = (floor?.Banks[1]?.UpStatus)!
+            cell.Elevator1CallControl.downCalled = (floor?.Banks[1]?.DownStatus)!
+            cell.Elevator2CallControl.upCalled = (floor?.Banks[2]?.UpStatus)!
+            cell.Elevator2CallControl.downCalled = (floor?.Banks[2]?.DownStatus)!
+            return cell
+
         }
-        
-        cell.backgroundColor = UIColor.lightGray
-        
-        return cell
         
     }
     
+    func reloadTableData(notification: Notification) {
+        // Do some reloading of data and update the table view's data source
+        // Fetch more objects from a web service, for example...
+        
+        // Simply adding an object to the data source for this example
+        self.tblMain.reloadData()
+        self.elevatorTableView.reloadData()
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return building.Elevators.count
+        if (tableView === self.tblMain) {
+            return building.Elevators.count
+        }
+        else{
+            return building.Floors.count
+        }
     }
 
 

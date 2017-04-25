@@ -21,8 +21,8 @@ class Building{
     init(building: [String: Any]) {
         self.Floors = [Int:Floor]()
         self.Elevators = [Elevator]()
-        let floors = building["floors"] as? [[String: Any]]
-        let elevators = building["elevators"] as? [[String: Any]]
+        let floors = building["Floors"] as? [[String: Any]]
+        let elevators = building["Elevators"] as? [[String: Any]]
         for e in elevators!{
             let elevator = Elevator(elevator: e)
             self.Elevators.append(elevator!)
@@ -47,7 +47,7 @@ class Building{
             let f = Floor(FloorId: i, Title: "\(i)");
             self.Floors[i] = f
             for elevator in self.Elevators{
-                f.addBankToFloors(ElevatorId: elevator.ElevatorId, upStatus: false, downStatus: false)
+                f.addBankToFloors(ElevatorId: elevator.ElevatorId, upStatus: true, downStatus: true)
             }
         }
     }

@@ -24,6 +24,13 @@ class Floor{
         self.FloorId = floor["FloorId"] as! Int
         self.Title = floor["Title"] as! String
         self.Banks = [:]
+        let banks = floor["Banks"] as! [[String: Any]]
+        
+        for b in banks {
+            let bank = Bank(bank: b)
+            self.Banks[bank.ElevatorId] = bank
+        }
+        
     }
     
     func addBankToFloors(ElevatorId:Int,  upStatus: Bool, downStatus: Bool){

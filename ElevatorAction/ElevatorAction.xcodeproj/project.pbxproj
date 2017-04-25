@@ -11,6 +11,8 @@
 		D76ECE90BFC572D45BA9427B /* Pods_ElevatorAction.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3EC03CDFE4CAD119A23F992 /* Pods_ElevatorAction.framework */; };
 		E31681411EAAA50400FAC964 /* SwiftR.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E31681401EAAA50400FAC964 /* SwiftR.framework */; };
 		E37D386E1EAE8F3E007D66E3 /* Bank.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37D386D1EAE8F3E007D66E3 /* Bank.swift */; };
+		E37D38741EAFCD26007D66E3 /* ElevatorCallButtonControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37D38731EAFCD26007D66E3 /* ElevatorCallButtonControl.swift */; };
+		E37D38761EAFDE02007D66E3 /* LiveFloorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37D38751EAFDE02007D66E3 /* LiveFloorTableViewCell.swift */; };
 		E3F5AE1A1EA9087200BE8731 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F5AE191EA9087200BE8731 /* AppDelegate.swift */; };
 		E3F5AE1C1EA9087200BE8731 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F5AE1B1EA9087200BE8731 /* ViewController.swift */; };
 		E3F5AE1F1EA9087200BE8731 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E3F5AE1D1EA9087200BE8731 /* Main.storyboard */; };
@@ -39,6 +41,8 @@
 		D3EC03CDFE4CAD119A23F992 /* Pods_ElevatorAction.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ElevatorAction.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E31681401EAAA50400FAC964 /* SwiftR.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftR.framework; path = "../../../Library/Developer/Xcode/DerivedData/ElevatorAction-axpydgdhmnpqnoegoaaqdlzffqcu/Build/Products/Debug-iphonesimulator/SwiftR/SwiftR.framework"; sourceTree = "<group>"; };
 		E37D386D1EAE8F3E007D66E3 /* Bank.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bank.swift; sourceTree = "<group>"; };
+		E37D38731EAFCD26007D66E3 /* ElevatorCallButtonControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ElevatorCallButtonControl.swift; sourceTree = "<group>"; };
+		E37D38751EAFDE02007D66E3 /* LiveFloorTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveFloorTableViewCell.swift; sourceTree = "<group>"; };
 		E3F5AE161EA9087200BE8731 /* ElevatorAction.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ElevatorAction.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3F5AE191EA9087200BE8731 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E3F5AE1B1EA9087200BE8731 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -125,7 +129,9 @@
 			children = (
 				E3F5AE3D1EA9362300BE8731 /* Models */,
 				E3F5AE191EA9087200BE8731 /* AppDelegate.swift */,
+				E37D38731EAFCD26007D66E3 /* ElevatorCallButtonControl.swift */,
 				E3F5AE3B1EA9194100BE8731 /* ElevatorTableViewCell.swift */,
+				E37D38751EAFDE02007D66E3 /* LiveFloorTableViewCell.swift */,
 				E3F5AE1B1EA9087200BE8731 /* ViewController.swift */,
 				E3F5AE1D1EA9087200BE8731 /* Main.storyboard */,
 				E3F5AE201EA9087200BE8731 /* Assets.xcassets */,
@@ -364,6 +370,8 @@
 				E3F5AE1A1EA9087200BE8731 /* AppDelegate.swift in Sources */,
 				E3F5AE3F1EA938B100BE8731 /* Building.swift in Sources */,
 				E3F5AE3A1EA90A3900BE8731 /* Elevator.swift in Sources */,
+				E37D38761EAFDE02007D66E3 /* LiveFloorTableViewCell.swift in Sources */,
+				E37D38741EAFCD26007D66E3 /* ElevatorCallButtonControl.swift in Sources */,
 				E3F5AE3C1EA9194100BE8731 /* ElevatorTableViewCell.swift in Sources */,
 				E37D386E1EAE8F3E007D66E3 /* Bank.swift in Sources */,
 			);
