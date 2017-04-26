@@ -25,9 +25,17 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var startButton: UIButton!
+    @IBOutlet weak var Elevator1Label: UILabel!
+    @IBOutlet weak var Elevator2Label: UILabel!
     
+
+    @IBOutlet weak var ElevatorCar1Image: UIImageView!
+    @IBOutlet weak var ElevatorCar2Image: UIImageView!
     var elevatorHub: Hub!
     var connection: SignalR!
+    
+    var previousFloor1 = 0
+    var previousFloor2 = 0
     
     
     
@@ -69,6 +77,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tblMain.dataSource = self
         elevatorTableView.delegate = self
         elevatorTableView.dataSource = self
+        self.ElevatorCar1Image.backgroundColor = UIColor.lightGray
+        self.ElevatorCar2Image.backgroundColor = UIColor.lightGray
         //NotificationCenter.default.addObserver(self, selector: #selector(reloadTableData), name: .reload, object: nil)
         
         connection = SignalR("https://camelbacksignalrtest.azurewebsites.net")
@@ -83,10 +93,24 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             let d: [String: Any] = m as! [String: Any]
             let b = Building(building: d)
             self?.building = b
+            self?.Elevator1Label.text = self?.building.Elevators[0].Name
+            self?.Elevator2Label.text = self?.building.Elevators[1].Name
             DispatchQueue.main.async {
                 self?.tblMain.reloadData()
                 self?.elevatorTableView.reloadData()
             }
+            
+            let floorchange1 = (self?.previousFloor1)! - b.Elevators[0].CurrentFloor
+            let floorchange2 = (self?.previousFloor2)! - b.Elevators[1].CurrentFloor
+            self?.previousFloor1 = b.Elevators[0].CurrentFloor
+            self?.previousFloor2 = b.Elevators[1].CurrentFloor
+            
+            UIView.animate(withDuration: 5, delay: 0, options: .curveEaseInOut, animations: {
+                
+                self?.ElevatorCar1Image.center.y += CGFloat(floorchange1 * 40)
+                self?.ElevatorCar2Image.center.y += CGFloat(floorchange2 * 40)
+            }, completion: nil)
+            
             
         }
         connection.addHub(elevatorHub)
@@ -173,6 +197,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 else {
                     cell.directionImageView.image = self.downArrow
                 }
+            }
+            else{
+                cell.directionImageView.image = nil
             }
             if elevator.DoorsOpen {
                 cell.doorOpenLabel.text = "Doors open"

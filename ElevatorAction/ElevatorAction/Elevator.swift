@@ -36,7 +36,12 @@ class Elevator {
         self.ElevatorId = elevator["ElevatorId"] as! Int
         self.Name = elevator["Name"] as! String
         self.DoorsOpen = elevator["DoorsOpen"] as! Bool
-        self.Direction = elevator["Direction"] as! Bool?
+        if (elevator["Direction"] as? NSNull) != nil{
+            self.Direction = nil
+        }
+        if (elevator["Direction"] as? Bool) != nil {
+            self.Direction = elevator["Direction"] as? Bool
+        }
         self.CurrentFloor = elevator["CurrentFloor"] as! Int
         self.Status = elevator["Status"] as! String?
     

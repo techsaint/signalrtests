@@ -13,12 +13,12 @@ import UIKit
     //MARK: Properties
     private var upCall = UIButton()
     private var downCall = UIButton()
-    var upCalled = true{
+    var upCalled = false{
         didSet {
             updateButtonSelectionStates()
         }
     }
-    var downCalled = true{
+    var downCalled = false{
         didSet {
             updateButtonSelectionStates()
         }
