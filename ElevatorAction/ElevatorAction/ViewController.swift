@@ -84,6 +84,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     override func viewDidLoad() {
         super.viewDidLoad()
+//        testDates()
         tblMain.delegate = self
         tblMain.dataSource = self
         elevatorTableView.delegate = self
@@ -346,6 +347,19 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             default:
                 fatalError("Unexpected Segue Identifier: \(String(describing: segue.identifier))")
         }
+    }
+    
+    
+    private func testDates() {
+        let readFormatter = DateFormatter()
+        readFormatter.dateFormat = "MM.dd.yyyy HH:mm"
+        
+        
+        let date = readFormatter.date(from: "04.26.2017 18:00")!
+        
+        print(date.description)
+        
+        print("")
     }
 
 

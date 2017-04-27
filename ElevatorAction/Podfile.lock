@@ -1,12 +1,24 @@
 PODS:
+  - SwiftCharts (0.6)
   - SwiftR (0.13.0)
 
 DEPENDENCIES:
+  - SwiftCharts (from `https://github.com/i-schuetz/SwiftCharts.git`)
   - SwiftR
 
+EXTERNAL SOURCES:
+  SwiftCharts:
+    :git: https://github.com/i-schuetz/SwiftCharts.git
+
+CHECKOUT OPTIONS:
+  SwiftCharts:
+    :commit: e62ee2b93599cf8572601c7330caf8fa3c9b6551
+    :git: https://github.com/i-schuetz/SwiftCharts.git
+
 SPEC CHECKSUMS:
+  SwiftCharts: 84f84c2a94a3f51f055eeaacd9b8dc3ada3380eb
   SwiftR: 340a0c3c6d665e8f243e4b57c8121e0d81f3a345
 
-PODFILE CHECKSUM: c80550d25f38f5d7c3fe744c23d77d5d8e21dcf2
+PODFILE CHECKSUM: 66f0ffea5c26d4b92b449a75922af1859ede288f
 
 COCOAPODS: 1.2.0

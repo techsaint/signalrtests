@@ -7,6 +7,7 @@ target 'ElevatorAction' do
 
   # Pods for ElevatorAction 
 	pod ‘SwiftR’ 
+	pod ’SwiftCharts’, :git => 'https://github.com/i-schuetz/SwiftCharts.git' 
 
   target 'ElevatorActionTests' do
     inherit! :search_paths
