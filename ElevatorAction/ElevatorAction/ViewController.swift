@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftR
+import os.log
 
 /*extension Notification.Name {
         static let reload = Notification.Name("reload")
@@ -30,12 +31,22 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
 
     @IBOutlet weak var ElevatorCar1Image: UIImageView!
+    @IBOutlet weak var ElevatorCar1LeftDoorImage: UIImageView!
+    @IBOutlet weak var ElevatorCar1RightDoorImage: UIImageView!
+    
+    
     @IBOutlet weak var ElevatorCar2Image: UIImageView!
+     @IBOutlet weak var ElevatorCar2LeftDoorImage: UIImageView!
+
+    @IBOutlet weak var ElevatorCar2RightDoorImage: UIImageView!
+    
     var elevatorHub: Hub!
     var connection: SignalR!
     
     var previousFloor1 = 0
     var previousFloor2 = 0
+    var previousOpen1 = false
+    var previousOpen2 = false
     
     
     
@@ -77,6 +88,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tblMain.dataSource = self
         elevatorTableView.delegate = self
         elevatorTableView.dataSource = self
+        
+        self.navigationController?.isNavigationBarHidden = true
+        
+        
         self.ElevatorCar1Image.backgroundColor = UIColor.lightGray
         self.ElevatorCar2Image.backgroundColor = UIColor.lightGray
         //NotificationCenter.default.addObserver(self, selector: #selector(reloadTableData), name: .reload, object: nil)
@@ -99,6 +114,26 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 self?.tblMain.reloadData()
                 self?.elevatorTableView.reloadData()
             }
+            let shouldShut1 = (self?.previousOpen1)! && !b.Elevators[0].DoorsOpen
+            let shouldShut2 = (self?.previousOpen2)! && !b.Elevators[1].DoorsOpen
+            let shouldShut = shouldShut1 || shouldShut2
+            
+            if(shouldShut){
+                UIView.animate(withDuration: 1, delay: 0, options: .curveEaseOut, animations: {
+                    if shouldShut1{
+                        self?.ElevatorCar1LeftDoorImage.center.x += CGFloat(16)
+                        self?.ElevatorCar1RightDoorImage.center.x -= CGFloat(16)
+                        self?.previousOpen1 = false
+                    }
+                    if shouldShut2{
+                        self?.ElevatorCar2LeftDoorImage.center.x += CGFloat(16)
+                        self?.ElevatorCar2RightDoorImage.center.x -= CGFloat(16)
+                        self?.previousOpen2 = false
+                    }
+
+                }, completion: nil)
+
+            }
             
             let floorchange1 = (self?.previousFloor1)! - b.Elevators[0].CurrentFloor
             let floorchange2 = (self?.previousFloor2)! - b.Elevators[1].CurrentFloor
@@ -108,8 +143,34 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             UIView.animate(withDuration: 5, delay: 0, options: .curveEaseInOut, animations: {
                 
                 self?.ElevatorCar1Image.center.y += CGFloat(floorchange1 * 40)
+                self?.ElevatorCar1LeftDoorImage.center.y += CGFloat(floorchange1 * 40)
+                self?.ElevatorCar1RightDoorImage.center.y += CGFloat(floorchange1 * 40)
                 self?.ElevatorCar2Image.center.y += CGFloat(floorchange2 * 40)
+                self?.ElevatorCar2LeftDoorImage.center.y += CGFloat(floorchange2 * 40)
+                self?.ElevatorCar2RightDoorImage.center.y += CGFloat(floorchange2 * 40)
             }, completion: nil)
+            
+            let shouldOpen1 = !(self?.previousOpen1)! && b.Elevators[0].DoorsOpen
+            let shouldOpen2 = !(self?.previousOpen2)! && b.Elevators[1].DoorsOpen
+            let shouldOpen = shouldOpen1 || shouldOpen2
+            
+            if(shouldOpen){
+                UIView.animate(withDuration: 1, delay: 0, options: .curveEaseOut, animations: {
+                    if shouldOpen1{
+                        self?.ElevatorCar1LeftDoorImage.center.x -= CGFloat(16)
+                        self?.ElevatorCar1RightDoorImage.center.x += CGFloat(16)
+                        self?.previousOpen1 = true
+                    }
+                    if shouldOpen2{
+                        self?.ElevatorCar2LeftDoorImage.center.x -= CGFloat(16)
+                        self?.ElevatorCar2RightDoorImage.center.x += CGFloat(16)
+                        self?.previousOpen2 = true
+                    }
+                    
+                }, completion: nil)
+                
+            }
+
             
             
         }
@@ -171,6 +232,16 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         // Do any additional setup after loading the view, typically from a nib.
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.isNavigationBarHidden = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.isNavigationBarHidden = false
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -247,6 +318,33 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         else{
             return building.Floors.count
+        }
+    }
+    
+    
+    //MARK: Navigation
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        switch(segue.identifier ?? ""){
+            case "ShowDetail":
+                guard let elevatorDetailViewController = segue.destination as? ElevatorDetailViewController else {
+                    fatalError("Unexpected destination: \(segue.destination)")
+                }
+                guard let selectedElevatorCell = sender as? ElevatorTableViewCell else {
+                    fatalError("Unexpected sender: \(String(describing: sender))")
+                }
+                guard let indexPath = tblMain.indexPath(for: selectedElevatorCell) else {
+                    fatalError("The selected cell is not being displayed by the table")
+                }
+                let selectedElevator = building.Elevators[indexPath.row]
+                let backItem = UIBarButtonItem()
+                backItem.title = "Back"
+                navigationItem.backBarButtonItem = backItem
+                elevatorDetailViewController.elevator = selectedElevator
+                elevatorDetailViewController.currentFloorName = self.building.Floors[selectedElevator.CurrentFloor]?.Title
+            default:
+                fatalError("Unexpected Segue Identifier: \(String(describing: segue.identifier))")
         }
     }
 

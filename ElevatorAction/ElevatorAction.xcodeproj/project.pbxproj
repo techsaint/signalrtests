@@ -13,6 +13,7 @@
 		E37D386E1EAE8F3E007D66E3 /* Bank.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37D386D1EAE8F3E007D66E3 /* Bank.swift */; };
 		E37D38741EAFCD26007D66E3 /* ElevatorCallButtonControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37D38731EAFCD26007D66E3 /* ElevatorCallButtonControl.swift */; };
 		E37D38761EAFDE02007D66E3 /* LiveFloorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37D38751EAFDE02007D66E3 /* LiveFloorTableViewCell.swift */; };
+		E37D38781EB13815007D66E3 /* ElevatorDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37D38771EB13815007D66E3 /* ElevatorDetailViewController.swift */; };
 		E3F5AE1A1EA9087200BE8731 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F5AE191EA9087200BE8731 /* AppDelegate.swift */; };
 		E3F5AE1C1EA9087200BE8731 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F5AE1B1EA9087200BE8731 /* ViewController.swift */; };
 		E3F5AE1F1EA9087200BE8731 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E3F5AE1D1EA9087200BE8731 /* Main.storyboard */; };
@@ -43,6 +44,7 @@
 		E37D386D1EAE8F3E007D66E3 /* Bank.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bank.swift; sourceTree = "<group>"; };
 		E37D38731EAFCD26007D66E3 /* ElevatorCallButtonControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ElevatorCallButtonControl.swift; sourceTree = "<group>"; };
 		E37D38751EAFDE02007D66E3 /* LiveFloorTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LiveFloorTableViewCell.swift; sourceTree = "<group>"; };
+		E37D38771EB13815007D66E3 /* ElevatorDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ElevatorDetailViewController.swift; sourceTree = "<group>"; };
 		E3F5AE161EA9087200BE8731 /* ElevatorAction.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ElevatorAction.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3F5AE191EA9087200BE8731 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E3F5AE1B1EA9087200BE8731 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 				E3F5AE3B1EA9194100BE8731 /* ElevatorTableViewCell.swift */,
 				E37D38751EAFDE02007D66E3 /* LiveFloorTableViewCell.swift */,
 				E3F5AE1B1EA9087200BE8731 /* ViewController.swift */,
+				E37D38771EB13815007D66E3 /* ElevatorDetailViewController.swift */,
 				E3F5AE1D1EA9087200BE8731 /* Main.storyboard */,
 				E3F5AE201EA9087200BE8731 /* Assets.xcassets */,
 				E3F5AE221EA9087200BE8731 /* LaunchScreen.storyboard */,
@@ -366,6 +369,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E3F5AE411EA938D500BE8731 /* Floor.swift in Sources */,
+				E37D38781EB13815007D66E3 /* ElevatorDetailViewController.swift in Sources */,
 				E3F5AE1C1EA9087200BE8731 /* ViewController.swift in Sources */,
 				E3F5AE1A1EA9087200BE8731 /* AppDelegate.swift in Sources */,
 				E3F5AE3F1EA938B100BE8731 /* Building.swift in Sources */,
