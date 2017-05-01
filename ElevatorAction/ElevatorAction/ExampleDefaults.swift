@@ -65,12 +65,25 @@ struct ExamplesDefaults {
         return chartSettings
     }
     
-    static func chartFrame(_ containerBounds: CGRect) -> CGRect {
-        return CGRect(x: 0, y: 200, width: containerBounds.size.width, height: 270)
+    static func chartFrame(_ containerBounds: CGRect, chartType: String) -> CGRect {
+        var y = 0
+        if chartType == "averagewaittime" {
+            y = 380
+        }
+        else if chartType == "runs" {
+            y = 160
+        }
+        else {
+            fatalError("chartType not recognized: \(chartType)")
+        }
+        
+        return CGRect(x: 0, y: y, width: Int(containerBounds.size.width), height: 190)
     }
     
     static var labelSettings: ChartLabelSettings {
-        return ChartLabelSettings(font: ExamplesDefaults.labelFont)
+        var settings = ChartLabelSettings(font: ExamplesDefaults.labelFont)
+        settings.fontColor = ExamplesDefaults.grayColor
+        return settings
     }
     
     static var labelFont: UIFont {
@@ -91,5 +104,13 @@ struct ExamplesDefaults {
     
     static var minBarSpacing: CGFloat {
         return  5
+    }
+    
+    static var grayColor: UIColor {
+        return UIColor(red: CGFloat(0.61), green: CGFloat(0.61), blue: CGFloat(0.61), alpha: CGFloat(1.0))
+    }
+    
+    static var lightGrayColor: UIColor {
+        return UIColor(red: CGFloat(0.8), green: CGFloat(0.8), blue: CGFloat(0.8), alpha: CGFloat(1.0))
     }
 }

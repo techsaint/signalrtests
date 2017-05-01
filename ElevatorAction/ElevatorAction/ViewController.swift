@@ -84,7 +84,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        testDates()
+        testDates()
         tblMain.delegate = self
         tblMain.dataSource = self
         elevatorTableView.delegate = self
@@ -105,7 +105,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         elevatorHub = Hub("camelBackHub")
         elevatorHub.on("receivedTelemetry") { [weak self] args in
             let m: AnyObject = args![0] as AnyObject
-            print(m)
+            //print(m)
             let d: [String: Any] = m as! [String: Any]
             let b = Building(building: d)
             self?.building = b
@@ -280,7 +280,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                 cell.doorOpenLabel.text = "Doors closed"
             }
         
-            cell.backgroundColor = UIColor.lightGray
         
             return cell
         }
@@ -351,15 +350,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     
     private func testDates() {
-        let readFormatter = DateFormatter()
-        readFormatter.dateFormat = "MM.dd.yyyy HH:mm"
-        
-        
-        let date = readFormatter.date(from: "04.26.2017 18:00")!
-        
-        print(date.description)
-        
-        print("")
+        let url = URL(string: "https://camelbacksignalrtest.azurewebsites.net/telemetry/averagewaittime/24hours")
+        let task = URLSession.shared.dataTask(with: url!) {(data, response, error) in
+            print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue) ?? "Service call failed")
+        }
+        task.resume()
     }
 
 
