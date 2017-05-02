@@ -68,10 +68,13 @@ struct ExamplesDefaults {
     static func chartFrame(_ containerBounds: CGRect, chartType: String) -> CGRect {
         var y = 0
         if chartType == "averagewaittime" {
-            y = 380
+            y = 436
         }
         else if chartType == "runs" {
-            y = 160
+            y = 216
+        }
+        else if chartType == "waittimeperfloor"{
+            y = 656
         }
         else {
             fatalError("chartType not recognized: \(chartType)")
@@ -112,5 +115,9 @@ struct ExamplesDefaults {
     
     static var lightGrayColor: UIColor {
         return UIColor(red: CGFloat(0.8), green: CGFloat(0.8), blue: CGFloat(0.8), alpha: CGFloat(1.0))
+    }
+    
+    static var medGrayColor: UIColor {
+        return UIColor(red: CGFloat(0.7), green: CGFloat(0.7), blue: CGFloat(0.7), alpha: CGFloat(1.0))
     }
 }

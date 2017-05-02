@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0E2EE10B14062AB98C0B6673 /* Pods_ElevatorActionTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2302B42148F69678671FBC7F /* Pods_ElevatorActionTests.framework */; };
 		D76ECE90BFC572D45BA9427B /* Pods_ElevatorAction.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3EC03CDFE4CAD119A23F992 /* Pods_ElevatorAction.framework */; };
+		E311AE531EB9201C006ACB8C /* MinAvgMaxFloor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E311AE521EB9201C006ACB8C /* MinAvgMaxFloor.swift */; };
 		E31681411EAAA50400FAC964 /* SwiftR.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E31681401EAAA50400FAC964 /* SwiftR.framework */; };
 		E37D386E1EAE8F3E007D66E3 /* Bank.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37D386D1EAE8F3E007D66E3 /* Bank.swift */; };
 		E37D38741EAFCD26007D66E3 /* ElevatorCallButtonControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37D38731EAFCD26007D66E3 /* ElevatorCallButtonControl.swift */; };
@@ -43,6 +44,7 @@
 		09EA3F2F217F1D8B1D3C597F /* Pods-ElevatorAction.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ElevatorAction.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ElevatorAction/Pods-ElevatorAction.debug.xcconfig"; sourceTree = "<group>"; };
 		2302B42148F69678671FBC7F /* Pods_ElevatorActionTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ElevatorActionTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3EC03CDFE4CAD119A23F992 /* Pods_ElevatorAction.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ElevatorAction.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E311AE521EB9201C006ACB8C /* MinAvgMaxFloor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MinAvgMaxFloor.swift; sourceTree = "<group>"; };
 		E31681401EAAA50400FAC964 /* SwiftR.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftR.framework; path = "../../../Library/Developer/Xcode/DerivedData/ElevatorAction-axpydgdhmnpqnoegoaaqdlzffqcu/Build/Products/Debug-iphonesimulator/SwiftR/SwiftR.framework"; sourceTree = "<group>"; };
 		E37D386D1EAE8F3E007D66E3 /* Bank.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bank.swift; sourceTree = "<group>"; };
 		E37D38731EAFCD26007D66E3 /* ElevatorCallButtonControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ElevatorCallButtonControl.swift; sourceTree = "<group>"; };
@@ -170,6 +172,7 @@
 				E37D386D1EAE8F3E007D66E3 /* Bank.swift */,
 				E37FF94D1EB287E90076F703 /* ExampleDefaults.swift */,
 				E37FF94F1EB39E170076F703 /* dateValue.swift */,
+				E311AE521EB9201C006ACB8C /* MinAvgMaxFloor.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -389,6 +392,7 @@
 				E37D38761EAFDE02007D66E3 /* LiveFloorTableViewCell.swift in Sources */,
 				E37D38741EAFCD26007D66E3 /* ElevatorCallButtonControl.swift in Sources */,
 				E3F5AE3C1EA9194100BE8731 /* ElevatorTableViewCell.swift in Sources */,
+				E311AE531EB9201C006ACB8C /* MinAvgMaxFloor.swift in Sources */,
 				E37D386E1EAE8F3E007D66E3 /* Bank.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

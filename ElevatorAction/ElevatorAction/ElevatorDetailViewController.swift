@@ -7,11 +7,15 @@
 //
 
 import UIKit
+import SwiftR
 import SwiftCharts
 
 class ElevatorDetailViewController: UIViewController, UITextFieldDelegate, UINavigationControllerDelegate{
     var elevator: Elevator?
     var currentFloorName: String?
+    @IBOutlet weak var innerView: UIView!
+    
+
     
     @IBOutlet weak var FloorDisplay: UIImageView!
     
@@ -22,22 +26,27 @@ class ElevatorDetailViewController: UIViewController, UITextFieldDelegate, UINav
     
     @IBOutlet weak var doorOpeningLabel: UILabel!
     
+    var elevatorHub: Hub!
+    var connection: SignalR!
+    
     @IBOutlet weak var runsLabel: UILabel!
     @IBOutlet weak var averageWaitLabel: UILabel!
-    @IBOutlet weak var scrollView: UIScrollView!
+    
     fileprivate var avgWaitChart: Chart?
     fileprivate var runsChart: Chart?
+    fileprivate var waittimeperfloorchart: Chart?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let doYourPath = UIBezierPath(rect: CGRect(x: 220, y: 180, width: 150, height: 1))
+        self.automaticallyAdjustsScrollViewInsets = false
+        //scrollView.contentSize = self.view.bounds.size
+        let doYourPath = UIBezierPath(rect: CGRect(x: 220, y: 136, width: 150, height: 1))
         let layer = CAShapeLayer()
         layer.path = doYourPath.cgPath
         layer.strokeColor = ExamplesDefaults.grayColor.cgColor
         layer.fillColor = UIColor.lightGray.cgColor
         
-        self.view.layer.addSublayer(layer)
+        self.innerView.layer.addSublayer(layer)
         
         if let elevator = elevator {
             navigationItem.title = elevator.Name
@@ -54,10 +63,93 @@ class ElevatorDetailViewController: UIViewController, UITextFieldDelegate, UINav
             else {
                 doorOpeningLabel.text = "Closed"
             }
-            
         }
+        
+            connection = SignalR("https://camelbacksignalrtest.azurewebsites.net")
+            //connection.useWKWebView = true
+            //connection.transport = .serverSentEvents
+            connection.signalRVersion = .v2_2_0
+            
+            elevatorHub = Hub("camelBackHub")
+            elevatorHub.on("receivedTelemetry") { [weak self] args in
+                let m: AnyObject = args![0] as AnyObject
+                //print(m)
+                let d: [String: Any] = m as! [String: Any]
+                let b = Building(building: d)
+                let e = b.Elevators.first(where: {$0.ElevatorId == self?.elevator?.ElevatorId})
+                
+                DispatchQueue.main.async() {
+                    if ((self?.elevator = e) != nil) {
+                        self?.floorNameLabel.text = b.Floors[(e?.CurrentFloor)!]?.Title
+                        if (e?.DoorsOpen)! {
+                            self?.leftElevatorDoorImage.image = #imageLiteral(resourceName: "back")
+                            self?.rightElevatorDoorImage.image = #imageLiteral(resourceName: "forward")
+                            self?.doorOpeningLabel.text = "Open"
+                        }
+                        else {
+                            self?.leftElevatorDoorImage.image = nil
+                            self?.rightElevatorDoorImage.image = nil
+                            self?.doorOpeningLabel.text = "Closed"
+                        }
+                    }
+                }
+        }
+        connection.addHub(elevatorHub)
+            
+            // SignalR events
+            
+        connection.starting = { [weak self] in
+                //self?.statusLabel.text = "Starting..."
+                //self?.startButton.isEnabled = false
+        }
+            
+        connection.reconnecting = { [weak self] in
+                //self?.statusLabel.text = "Reconnecting..."
+                //self?.startButton.isEnabled = false
+        }
+            
+        connection.connected = { [weak self] in
+                print("Connection ID: \(self!.connection.connectionID!)")
+                //self?.statusLabel.text = "Connected"
+                //self?.startButton.isEnabled = true
+                //self?.startButton.setTitle("Start", for: UIControlState.normal )
+                
+        }
+            
+        connection.reconnected = { [weak self] in
+                //self?.statusLabel.text = "Reconnected. Connection ID: \(self!.connection.connectionID!)"
+                //self?.startButton.isEnabled = true
+                //self?.startButton.setTitle("Stop", for: UIControlState.normal)
+        }
+            
+        connection.disconnected = { [weak self] in
+                //self?.statusLabel.text = "Disconnected"
+                //self?.startButton.isEnabled = true
+                //self?.startButton.setTitle("Start", for: UIControlState.normal)
+        }
+            
+        connection.connectionSlow = { print("Connection slow...") }
+            
+        connection.error = { [weak self] error in
+            print("Error: \(error)")
+                
+                // Here's an example of how to automatically reconnect after a timeout.
+                //
+                // For example, on the device, if the app is in the background long enough
+                // for the SignalR connection to time out, you'll get disconnected/error
+                // notifications when the app becomes active again.
+                
+            if let source = error?["source"] as? String, source == "TimeoutException" {
+                print("Connection timed out. Restarting...")
+                self?.connection.start()
+            }
+        }
+        self.connection.start()
+
+            
         drawTimeChart(chartType: "averagewaittime")
         drawTimeChart(chartType: "runs")
+        drawPerFloorChart()
     }
    
 
@@ -110,7 +202,7 @@ class ElevatorDetailViewController: UIViewController, UITextFieldDelegate, UINav
             }
             
             for datum in dateValues{
-                let chartPoint = self.createChartPoint(dateStr: datum.date, waitTime: datum.value, readFormatter: readFormatter, displayFormatter: displayFormatter)
+                let chartPoint = self.createDatedChartPoint(dateStr: datum.date, waitTime: datum.value, readFormatter: readFormatter, displayFormatter: displayFormatter)
                 chartPoints.append(chartPoint)
             }
             
@@ -126,14 +218,14 @@ class ElevatorDetailViewController: UIViewController, UITextFieldDelegate, UINav
             
             let xModel = ChartAxisModel(axisValues: xValues)
             let yModel = ChartAxisModel(axisValues: yValues, lineColor: ExamplesDefaults.grayColor)
-            let chartFrame = ExamplesDefaults.chartFrame(self.scrollView.bounds, chartType: chartType)
+            let chartFrame = ExamplesDefaults.chartFrame(self.innerView.bounds, chartType: chartType)
             
             let chartSettings = ExamplesDefaults.chartSettingsWithPanZoom
             
             let coordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: chartSettings, chartFrame: chartFrame, xModel: xModel, yModel: yModel)
             let (xAxisLayer, yAxisLayer, innerFrame) = (coordsSpace.xAxisLayer, coordsSpace.yAxisLayer, coordsSpace.chartInnerFrame)
             
-            let lineModel = ChartLineModel(chartPoints: chartPoints, lineColor: UIColor.red, animDuration: 1, animDelay: 0)
+            let lineModel = ChartLineModel(chartPoints: chartPoints, lineColor: ExamplesDefaults.grayColor, animDuration: 1, animDelay: 0)
             //let lineModel2 = ChartLineModel(chartPoints: chartPoints2, lineColor: UIColor.blue, animDuration: 1, animDelay: 0)
             let chartPointsLineLayer = ChartPointsLineLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, lineModels: [lineModel/*, lineModel2*/], useView: false)
             
@@ -157,7 +249,7 @@ class ElevatorDetailViewController: UIViewController, UITextFieldDelegate, UINav
                     label.textColor = UIColor.white
                     
                     currentPositionLabels.append(label)
-                    self.scrollView.addSubview(label)
+                    self.innerView.addSubview(label)
                 }
             }
             
@@ -179,7 +271,7 @@ class ElevatorDetailViewController: UIViewController, UITextFieldDelegate, UINav
                     ]
                 )
                 
-                self.scrollView.addSubview(chart.view)
+                self.innerView.addSubview(chart.view)
                 
                 if chartType == "averagewaittime" {
                     self.avgWaitChart = chart
@@ -204,6 +296,85 @@ class ElevatorDetailViewController: UIViewController, UITextFieldDelegate, UINav
         task.resume()
         
     }
+    func drawPerFloorChart(){
+        let url = URL(string: "https://camelbacksignalrtest.azurewebsites.net/telemetry/waittimeperfloor/24hours")
+        let task = URLSession.shared.dataTask(with: url!) {(data, response, error) in
+            var values: [minAvgMaxFloor] = []
+            var labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont)
+            labelSettings.fontColor = ExamplesDefaults.grayColor
+
+            let json = try? JSONSerialization.jsonObject(with: data!, options: [])
+            let g: [[String: Any]] = json as! [[String: Any]]
+            for d in g {
+                let value = minAvgMaxFloor(data: d)
+                values.append(value)
+            }
+            
+            
+            var i = 1;
+            let zero = ChartAxisValueDouble(0)
+            var barModels: [ChartStackedBarModel] = []
+            var axisPoints: [ChartPoint] = []
+            
+            for datum in values{
+                let barStack = ChartStackedBarModel(constant: ChartAxisValueString(datum.floor, order:i, labelSettings: labelSettings), start: zero, items: [
+                    ChartStackedBarItemModel(quantity: datum.min, bgColor: ExamplesDefaults.lightGrayColor),
+                    ChartStackedBarItemModel(quantity: datum.avg, bgColor: ExamplesDefaults.medGrayColor),
+                    ChartStackedBarItemModel(quantity: datum.max, bgColor: ExamplesDefaults.grayColor)
+                ])
+                let axisPoint = ChartPoint(x: ChartAxisValueDouble(0)  , y: ChartAxisValueDouble(datum.max))
+                axisPoints.append((axisPoint))
+                barModels.append(barStack)
+                
+                i = i + 1
+            }
+        
+            let (axisValues1, axisValues2) = (
+                ChartAxisValuesStaticGenerator.generateYAxisValuesWithChartPoints(axisPoints, minSegmentCount: 1.0, maxSegmentCount: 5, axisValueGenerator: {ChartAxisValueDouble($0, labelSettings: labelSettings)}, addPaddingSegmentIfEdge: false),
+                [ChartAxisValueString("", order: 0, labelSettings: labelSettings)] + barModels.map{$0.constant} + [ChartAxisValueString("", order: 12, labelSettings: labelSettings)]
+            )
+            let (xValues, yValues) = (axisValues2, axisValues1)
+            
+            let xModel = ChartAxisModel(axisValues: xValues)
+            let yModel = ChartAxisModel(axisValues: yValues, lineColor: ExamplesDefaults.grayColor)
+            
+            let chartFrame = ExamplesDefaults.chartFrame(self.innerView.bounds, chartType: "waittimeperfloor")
+            
+            let chartSettings = ExamplesDefaults.chartSettingsWithPanZoom
+            
+            let coordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: chartSettings, chartFrame: chartFrame, xModel: xModel, yModel: yModel)
+            let (xAxisLayer, yAxisLayer, innerFrame) = (coordsSpace.xAxisLayer, coordsSpace.yAxisLayer, coordsSpace.chartInnerFrame)
+            
+            let barViewSettings = ChartBarViewSettings(animDuration: 0.5)
+            let chartStackedBarsLayer = ChartStackedBarsLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, innerFrame: innerFrame, barModels: barModels, horizontal: false, barWidth: 10, settings: barViewSettings)
+            
+            let settings = ChartGuideLinesDottedLayerSettings(linesColor: ExamplesDefaults.lightGrayColor, linesWidth: ExamplesDefaults.guidelinesWidth)
+            let guidelinesLayer = ChartGuideLinesDottedLayer(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, settings: settings)
+            
+            DispatchQueue.main.async() {
+                // update some UI
+                let chart = Chart(
+                    frame: chartFrame,
+                    innerFrame: innerFrame,
+                    settings: chartSettings,
+                    layers: [
+                        xAxisLayer,
+                        yAxisLayer,
+                        guidelinesLayer,
+                        chartStackedBarsLayer
+                    ]
+                )
+                self.innerView.addSubview(chart.view)
+                self.waittimeperfloorchart = chart
+            }
+            
+            
+            
+        }
+        task.resume()
+        
+    }
+    
     
     func createXAxisValues(calendar: Calendar, readFormatter: DateFormatter, displayFormatter: DateFormatter) -> [ChartPoint]{
         var points: [ChartPoint] = []
@@ -214,22 +385,22 @@ class ElevatorDetailViewController: UIViewController, UITextFieldDelegate, UINav
         let currentHourIsOdd = Int(currentHourStr)! % 2
         if currentHourIsOdd == 1{
             let firstDate = calendar.date(byAdding: .hour, value: -24, to: now)
-            let firstPoint = self.createChartPoint(dateStr: readFormatter.string(from: firstDate!), waitTime: 0, readFormatter: readFormatter, displayFormatter: displayFormatter)
+            let firstPoint = self.createDatedChartPoint(dateStr: readFormatter.string(from: firstDate!), waitTime: 0, readFormatter: readFormatter, displayFormatter: displayFormatter)
             points.append(firstPoint)
             for i in (0...12) {
                 let adjustedDate = calendar.date(byAdding: .hour, value: 1 + (i * 2), to: firstDate!)
-                let chartPoint = self.createChartPoint(dateStr: readFormatter.string(from: adjustedDate!), waitTime: 0, readFormatter: readFormatter, displayFormatter: displayFormatter)
+                let chartPoint = self.createDatedChartPoint(dateStr: readFormatter.string(from: adjustedDate!), waitTime: 0, readFormatter: readFormatter, displayFormatter: displayFormatter)
                 points.append(chartPoint)
             }
             
-            let lastPoint = self.createChartPoint(dateStr: readFormatter.string(from: now), waitTime: 0, readFormatter: readFormatter, displayFormatter: displayFormatter)
+            let lastPoint = self.createDatedChartPoint(dateStr: readFormatter.string(from: now), waitTime: 0, readFormatter: readFormatter, displayFormatter: displayFormatter)
             points.append(lastPoint)
 
         }
         else{
             for i in (0...12).reversed() {
                 let adjustedDate = calendar.date(byAdding: .hour, value: (i * -2), to: now)
-                let chartPoint = self.createChartPoint(dateStr: readFormatter.string(from: adjustedDate!), waitTime: 0, readFormatter: readFormatter, displayFormatter: displayFormatter)
+                let chartPoint = self.createDatedChartPoint(dateStr: readFormatter.string(from: adjustedDate!), waitTime: 0, readFormatter: readFormatter, displayFormatter: displayFormatter)
                 points.append(chartPoint)
             }
         }
@@ -238,7 +409,7 @@ class ElevatorDetailViewController: UIViewController, UITextFieldDelegate, UINav
 
     }
     
-    func createChartPoint(dateStr: String, waitTime: Double, readFormatter: DateFormatter, displayFormatter: DateFormatter) -> ChartPoint {
+    func createDatedChartPoint(dateStr: String, waitTime: Double, readFormatter: DateFormatter, displayFormatter: DateFormatter) -> ChartPoint {
         return ChartPoint(x: createDateAxisValue(dateStr, readFormatter: readFormatter, displayFormatter: displayFormatter), y: ChartAxisValueDouble(waitTime))
     }
     
