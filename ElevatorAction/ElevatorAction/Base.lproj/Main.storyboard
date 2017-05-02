@@ -203,11 +203,11 @@
                         <viewControllerLayoutGuide type="bottom" id="Pdq-PV-tit"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="KyI-Qa-X6F">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="1000"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="900"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="V47-6U-8iB">
-                                <rect key="frame" x="0.0" y="64" width="375" height="936"/>
+                                <rect key="frame" x="0.0" y="64" width="375" height="836"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="434-In-pY2">
                                         <rect key="frame" x="0.0" y="-64" width="375" height="1064"/>
@@ -295,7 +295,7 @@
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Wait Time Per Floor" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pRN-Lg-wKv">
-                                                <rect key="frame" x="31" y="619" width="222" height="29"/>
+                                                <rect key="frame" x="31" y="626" width="222" height="29"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
                                                 <color key="textColor" white="0.61499131939999996" alpha="1" colorSpace="calibratedWhite"/>
@@ -304,7 +304,7 @@
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="1000" id="9xZ-Ds-WBB"/>
+                                            <constraint firstAttribute="height" constant="900" id="9xZ-Ds-WBB" userLabel="height = 900"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -333,7 +333,7 @@
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="375" height="1000"/>
+                    <size key="freeformSize" width="375" height="900"/>
                     <connections>
                         <outlet property="FloorDisplay" destination="sDm-ZM-80G" id="VFF-L3-QiK"/>
                         <outlet property="averageWaitLabel" destination="SNJ-e5-5wV" id="AZP-VJ-FSn"/>
