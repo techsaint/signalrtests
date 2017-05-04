@@ -14,10 +14,16 @@ import os.log
         static let reload = Notification.Name("reload")
     } */
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource
+class MainViewController: UIViewController, UITableViewDelegate, UITableViewDataSource
 {
 
         
+    @IBAction func Header1_click(_ sender: Any) {
+    }
+    
+    @IBAction func Header2_click(_ sender: Any) {
+    }
+    
     @IBOutlet weak var tblMain: UITableView!
     @IBOutlet weak var elevatorTableView: UITableView!
     var building = Building()
@@ -26,8 +32,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     @IBOutlet weak var statusLabel: UILabel!
     @IBOutlet weak var startButton: UIButton!
-    @IBOutlet weak var Elevator1Label: UILabel!
-    @IBOutlet weak var Elevator2Label: UILabel!
     
 
     @IBOutlet weak var ElevatorCar1Image: UIImageView!
@@ -80,17 +84,15 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
     }
     
+    @IBOutlet weak var header1Label: UIButton!
     
+    @IBOutlet weak var header2Label: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         testDates()
-        tblMain.delegate = self
-        tblMain.dataSource = self
         elevatorTableView.delegate = self
         elevatorTableView.dataSource = self
-        
-        self.navigationController?.isNavigationBarHidden = true
         
         
         self.ElevatorCar1Image.backgroundColor = UIColor.lightGray
@@ -109,10 +111,9 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             let d: [String: Any] = m as! [String: Any]
             let b = Building(building: d)
             self?.building = b
-            self?.Elevator1Label.text = self?.building.Elevators[0].Name
-            self?.Elevator2Label.text = self?.building.Elevators[1].Name
             DispatchQueue.main.async {
-                self?.tblMain.reloadData()
+                self?.header1Label.setTitle(self?.building.Elevators[0].Name, for: UIControlState.normal)
+                self?.header2Label.setTitle(self?.building.Elevators[1].Name, for: UIControlState.normal)
                 self?.elevatorTableView.reloadData()
             }
             let shouldShut1 = (self?.previousOpen1)! && !b.Elevators[0].DoorsOpen
@@ -122,13 +123,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             if(shouldShut){
                 UIView.animate(withDuration: 1, delay: 0, options: .curveEaseOut, animations: {
                     if shouldShut1{
-                        self?.ElevatorCar1LeftDoorImage.center.x += CGFloat(16)
-                        self?.ElevatorCar1RightDoorImage.center.x -= CGFloat(16)
+                        self?.ElevatorCar1LeftDoorImage.center.x += CGFloat(20)
+                        self?.ElevatorCar1RightDoorImage.center.x -= CGFloat(20)
                         self?.previousOpen1 = false
                     }
                     if shouldShut2{
-                        self?.ElevatorCar2LeftDoorImage.center.x += CGFloat(16)
-                        self?.ElevatorCar2RightDoorImage.center.x -= CGFloat(16)
+                        self?.ElevatorCar2LeftDoorImage.center.x += CGFloat(20)
+                        self?.ElevatorCar2RightDoorImage.center.x -= CGFloat(20)
                         self?.previousOpen2 = false
                     }
 
@@ -143,12 +144,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             
             UIView.animate(withDuration: 5, delay: 0, options: .curveEaseInOut, animations: {
                 
-                self?.ElevatorCar1Image.center.y += CGFloat(floorchange1 * 40)
-                self?.ElevatorCar1LeftDoorImage.center.y += CGFloat(floorchange1 * 40)
-                self?.ElevatorCar1RightDoorImage.center.y += CGFloat(floorchange1 * 40)
-                self?.ElevatorCar2Image.center.y += CGFloat(floorchange2 * 40)
-                self?.ElevatorCar2LeftDoorImage.center.y += CGFloat(floorchange2 * 40)
-                self?.ElevatorCar2RightDoorImage.center.y += CGFloat(floorchange2 * 40)
+                self?.ElevatorCar1Image.center.y += CGFloat(floorchange1 * 50)
+                self?.ElevatorCar1LeftDoorImage.center.y += CGFloat(floorchange1 * 50)
+                self?.ElevatorCar1RightDoorImage.center.y += CGFloat(floorchange1 * 50)
+                self?.ElevatorCar2Image.center.y += CGFloat(floorchange2 * 50)
+                self?.ElevatorCar2LeftDoorImage.center.y += CGFloat(floorchange2 * 50)
+                self?.ElevatorCar2RightDoorImage.center.y += CGFloat(floorchange2 * 50)
             }, completion: nil)
             
             let shouldOpen1 = !(self?.previousOpen1)! && b.Elevators[0].DoorsOpen
@@ -158,13 +159,13 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             if(shouldOpen){
                 UIView.animate(withDuration: 1, delay: 0, options: .curveEaseOut, animations: {
                     if shouldOpen1{
-                        self?.ElevatorCar1LeftDoorImage.center.x -= CGFloat(16)
-                        self?.ElevatorCar1RightDoorImage.center.x += CGFloat(16)
+                        self?.ElevatorCar1LeftDoorImage.center.x -= CGFloat(20)
+                        self?.ElevatorCar1RightDoorImage.center.x += CGFloat(20)
                         self?.previousOpen1 = true
                     }
                     if shouldOpen2{
-                        self?.ElevatorCar2LeftDoorImage.center.x -= CGFloat(16)
-                        self?.ElevatorCar2RightDoorImage.center.x += CGFloat(16)
+                        self?.ElevatorCar2LeftDoorImage.center.x -= CGFloat(20)
+                        self?.ElevatorCar2RightDoorImage.center.x += CGFloat(20)
                         self?.previousOpen2 = true
                     }
                     
@@ -251,56 +252,20 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if (tableView === self.tblMain) {
-        
-            let cellIdentifier = "ElevatorTableViewCell"
-        
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? ElevatorTableViewCell else
-            {
-                fatalError("The dequeued cell is not an instance of ElevatorTableViewCell.")
-            }
-            let elevator = building.Elevators[indexPath.row]
-        
-            cell.nameLabel.text = elevator.Name
-            cell.floorLabel.text = building.Floors[elevator.CurrentFloor]?.Title
-            if elevator.Direction != nil{
-                if elevator.Direction == true {
-                    cell.directionImageView.image = self.upArrow
-                }
-                else {
-                    cell.directionImageView.image = self.downArrow
-                }
-            }
-            else{
-                cell.directionImageView.image = nil
-            }
-            if elevator.DoorsOpen {
-                cell.doorOpenLabel.text = "Doors open"
-            }
-            else {
-                cell.doorOpenLabel.text = "Doors closed"
-            }
-        
-        
-            return cell
-        }
-        else {
-            let cellIdentifier = "LiveFloorTableViewCell"
+        let cellIdentifier = "LiveFloorTableViewCell"
             
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? LiveFloorTableViewCell else
-            {
-                fatalError("The dequeued cell is not an instance of LiveFloorTableViewCell.")
-            }
-            let floor = building.Floors[(building.Floors.count - (indexPath.row + 1))]
-            
-            cell.floorNameLabel.text = (floor?.Title)!
-            cell.Elevator1CallControl.upCalled = (floor?.Banks[1]?.UpStatus)!
-            cell.Elevator1CallControl.downCalled = (floor?.Banks[1]?.DownStatus)!
-            cell.Elevator2CallControl.upCalled = (floor?.Banks[2]?.UpStatus)!
-            cell.Elevator2CallControl.downCalled = (floor?.Banks[2]?.DownStatus)!
-            return cell
-
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath) as? LiveFloorTableViewCell else
+        {
+            fatalError("The dequeued cell is not an instance of LiveFloorTableViewCell.")
         }
+        let floor = building.Floors[(building.Floors.count - (indexPath.row + 1))]
+            
+        cell.floorNameLabel.text = (floor?.Title)!
+        cell.Elevator1CallControl.upCalled = (floor?.Banks[1]?.UpStatus)!
+        cell.Elevator1CallControl.downCalled = (floor?.Banks[1]?.DownStatus)!
+        cell.Elevator2CallControl.upCalled = (floor?.Banks[2]?.UpStatus)!
+        cell.Elevator2CallControl.downCalled = (floor?.Banks[2]?.DownStatus)!
+        return cell
         
     }
     
@@ -309,17 +274,11 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         // Fetch more objects from a web service, for example...
         
         // Simply adding an object to the data source for this example
-        self.tblMain.reloadData()
         self.elevatorTableView.reloadData()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if (tableView === self.tblMain) {
-            return building.Elevators.count
-        }
-        else{
-            return building.Floors.count
-        }
+        return building.Floors.count
     }
     
     
@@ -327,33 +286,33 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
+        guard let elevatorDetailViewController = segue.destination as? ElevatorDetailViewController else {
+            fatalError("Unexpected destination: \(segue.destination)")
+        }
+        var selectedElevator: Elevator
         switch(segue.identifier ?? ""){
-            case "ShowDetail":
-                guard let elevatorDetailViewController = segue.destination as? ElevatorDetailViewController else {
-                    fatalError("Unexpected destination: \(segue.destination)")
-                }
-                guard let selectedElevatorCell = sender as? ElevatorTableViewCell else {
-                    fatalError("Unexpected sender: \(String(describing: sender))")
-                }
-                guard let indexPath = tblMain.indexPath(for: selectedElevatorCell) else {
-                    fatalError("The selected cell is not being displayed by the table")
-                }
-                let selectedElevator = building.Elevators[indexPath.row]
-                let backItem = UIBarButtonItem()
-                backItem.title = "Back"
-                navigationItem.backBarButtonItem = backItem
-                elevatorDetailViewController.elevator = selectedElevator
-                elevatorDetailViewController.currentFloorName = self.building.Floors[selectedElevator.CurrentFloor]?.Title
+            case "ShowDetail1":
+                selectedElevator = building.Elevators[0]
+            
+            case "ShowDetail2":
+
+                selectedElevator = building.Elevators[1]
+           
             default:
                 fatalError("Unexpected Segue Identifier: \(String(describing: segue.identifier))")
         }
+        let backItem = UIBarButtonItem()
+        backItem.title = "Back"
+        navigationItem.backBarButtonItem = backItem
+        elevatorDetailViewController.elevator = selectedElevator
+        elevatorDetailViewController.currentFloorName = self.building.Floors[selectedElevator.CurrentFloor]?.Title
     }
     
     
     private func testDates() {
         let url = URL(string: "https://camelbacksignalrtest.azurewebsites.net/telemetry/averagewaittime/24hours")
         let task = URLSession.shared.dataTask(with: url!) {(data, response, error) in
-            print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue) ?? "Service call failed")
+            //print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue) ?? "Service call failed")
         }
         task.resume()
     }

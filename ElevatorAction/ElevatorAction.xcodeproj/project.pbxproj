@@ -10,6 +10,7 @@
 		0E2EE10B14062AB98C0B6673 /* Pods_ElevatorActionTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2302B42148F69678671FBC7F /* Pods_ElevatorActionTests.framework */; };
 		D76ECE90BFC572D45BA9427B /* Pods_ElevatorAction.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3EC03CDFE4CAD119A23F992 /* Pods_ElevatorAction.framework */; };
 		E311AE531EB9201C006ACB8C /* MinAvgMaxFloor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E311AE521EB9201C006ACB8C /* MinAvgMaxFloor.swift */; };
+		E311AE571EBBCE09006ACB8C /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E311AE561EBBCE09006ACB8C /* LoginViewController.swift */; };
 		E31681411EAAA50400FAC964 /* SwiftR.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E31681401EAAA50400FAC964 /* SwiftR.framework */; };
 		E37D386E1EAE8F3E007D66E3 /* Bank.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37D386D1EAE8F3E007D66E3 /* Bank.swift */; };
 		E37D38741EAFCD26007D66E3 /* ElevatorCallButtonControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37D38731EAFCD26007D66E3 /* ElevatorCallButtonControl.swift */; };
@@ -19,7 +20,7 @@
 		E37FF9501EB39E170076F703 /* dateValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37FF94F1EB39E170076F703 /* dateValue.swift */; };
 		E3DB68F31EB2708700ACA134 /* SwiftCharts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3DB68F21EB2708700ACA134 /* SwiftCharts.framework */; };
 		E3F5AE1A1EA9087200BE8731 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F5AE191EA9087200BE8731 /* AppDelegate.swift */; };
-		E3F5AE1C1EA9087200BE8731 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F5AE1B1EA9087200BE8731 /* ViewController.swift */; };
+		E3F5AE1C1EA9087200BE8731 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F5AE1B1EA9087200BE8731 /* MainViewController.swift */; };
 		E3F5AE1F1EA9087200BE8731 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E3F5AE1D1EA9087200BE8731 /* Main.storyboard */; };
 		E3F5AE211EA9087200BE8731 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E3F5AE201EA9087200BE8731 /* Assets.xcassets */; };
 		E3F5AE241EA9087200BE8731 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E3F5AE221EA9087200BE8731 /* LaunchScreen.storyboard */; };
@@ -45,6 +46,7 @@
 		2302B42148F69678671FBC7F /* Pods_ElevatorActionTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ElevatorActionTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3EC03CDFE4CAD119A23F992 /* Pods_ElevatorAction.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ElevatorAction.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E311AE521EB9201C006ACB8C /* MinAvgMaxFloor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MinAvgMaxFloor.swift; sourceTree = "<group>"; };
+		E311AE561EBBCE09006ACB8C /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		E31681401EAAA50400FAC964 /* SwiftR.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftR.framework; path = "../../../Library/Developer/Xcode/DerivedData/ElevatorAction-axpydgdhmnpqnoegoaaqdlzffqcu/Build/Products/Debug-iphonesimulator/SwiftR/SwiftR.framework"; sourceTree = "<group>"; };
 		E37D386D1EAE8F3E007D66E3 /* Bank.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bank.swift; sourceTree = "<group>"; };
 		E37D38731EAFCD26007D66E3 /* ElevatorCallButtonControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ElevatorCallButtonControl.swift; sourceTree = "<group>"; };
@@ -55,7 +57,7 @@
 		E3DB68F21EB2708700ACA134 /* SwiftCharts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftCharts.framework; path = "../../../Library/Developer/Xcode/DerivedData/ElevatorAction-axpydgdhmnpqnoegoaaqdlzffqcu/Build/Products/Debug-iphonesimulator/SwiftCharts/SwiftCharts.framework"; sourceTree = "<group>"; };
 		E3F5AE161EA9087200BE8731 /* ElevatorAction.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ElevatorAction.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3F5AE191EA9087200BE8731 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		E3F5AE1B1EA9087200BE8731 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		E3F5AE1B1EA9087200BE8731 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		E3F5AE1E1EA9087200BE8731 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E3F5AE201EA9087200BE8731 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E3F5AE231EA9087200BE8731 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -144,12 +146,13 @@
 				E37D38731EAFCD26007D66E3 /* ElevatorCallButtonControl.swift */,
 				E3F5AE3B1EA9194100BE8731 /* ElevatorTableViewCell.swift */,
 				E37D38751EAFDE02007D66E3 /* LiveFloorTableViewCell.swift */,
-				E3F5AE1B1EA9087200BE8731 /* ViewController.swift */,
+				E3F5AE1B1EA9087200BE8731 /* MainViewController.swift */,
 				E37D38771EB13815007D66E3 /* ElevatorDetailViewController.swift */,
 				E3F5AE1D1EA9087200BE8731 /* Main.storyboard */,
 				E3F5AE201EA9087200BE8731 /* Assets.xcassets */,
 				E3F5AE221EA9087200BE8731 /* LaunchScreen.storyboard */,
 				E3F5AE251EA9087200BE8731 /* Info.plist */,
+				E311AE561EBBCE09006ACB8C /* LoginViewController.swift */,
 			);
 			path = ElevatorAction;
 			sourceTree = "<group>";
@@ -381,11 +384,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E311AE571EBBCE09006ACB8C /* LoginViewController.swift in Sources */,
 				E37FF94E1EB287E90076F703 /* ExampleDefaults.swift in Sources */,
 				E3F5AE411EA938D500BE8731 /* Floor.swift in Sources */,
 				E37D38781EB13815007D66E3 /* ElevatorDetailViewController.swift in Sources */,
 				E37FF9501EB39E170076F703 /* dateValue.swift in Sources */,
-				E3F5AE1C1EA9087200BE8731 /* ViewController.swift in Sources */,
+				E3F5AE1C1EA9087200BE8731 /* MainViewController.swift in Sources */,
 				E3F5AE1A1EA9087200BE8731 /* AppDelegate.swift in Sources */,
 				E3F5AE3F1EA938B100BE8731 /* Building.swift in Sources */,
 				E3F5AE3A1EA90A3900BE8731 /* Elevator.swift in Sources */,

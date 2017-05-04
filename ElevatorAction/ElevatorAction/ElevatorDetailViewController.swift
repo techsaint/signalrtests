@@ -318,9 +318,10 @@ class ElevatorDetailViewController: UIViewController, UITextFieldDelegate, UINav
             
             for datum in values{
                 let barStack = ChartStackedBarModel(constant: ChartAxisValueString(datum.floor, order:i, labelSettings: labelSettings), start: zero, items: [
-                    ChartStackedBarItemModel(quantity: datum.min, bgColor: ExamplesDefaults.lightGrayColor),
+                    ChartStackedBarItemModel(quantity: datum.max, bgColor: ExamplesDefaults.grayColor),
                     ChartStackedBarItemModel(quantity: datum.avg, bgColor: ExamplesDefaults.medGrayColor),
-                    ChartStackedBarItemModel(quantity: datum.max, bgColor: ExamplesDefaults.grayColor)
+                    ChartStackedBarItemModel(quantity: datum.min, bgColor: ExamplesDefaults.lightGrayColor)
+
                 ])
                 let axisPoint = ChartPoint(x: ChartAxisValueDouble(0)  , y: ChartAxisValueDouble(datum.max))
                 axisPoints.append((axisPoint))
