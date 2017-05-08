@@ -15,7 +15,11 @@ class ElevatorDetailViewController: UIViewController, UITextFieldDelegate, UINav
     var currentFloorName: String?
     @IBOutlet weak var innerView: UIView!
     
+    @IBOutlet weak var graph1BackgroundImageView: UIImageView!
 
+    @IBOutlet weak var graph2BackgroundImageView: UIImageView!
+    
+    @IBOutlet weak var graph3BackgroundImageView: UIImageView!
     
     @IBOutlet weak var FloorDisplay: UIImageView!
     
@@ -25,6 +29,19 @@ class ElevatorDetailViewController: UIViewController, UITextFieldDelegate, UINav
     @IBOutlet weak var rightElevatorDoorImage: UIImageView!
     
     @IBOutlet weak var doorOpeningLabel: UILabel!
+    
+    @IBOutlet weak var status1Image: UIImageView!
+    
+    @IBOutlet weak var status2Image: UIImageView!
+    
+    @IBOutlet weak var status3Image: UIImageView!
+    
+    @IBOutlet weak var status4Image: UIImageView!
+    
+    @IBOutlet weak var status5Image: UIImageView!
+    
+    @IBOutlet weak var status6Image: UIImageView!
+
     
     var elevatorHub: Hub!
     var connection: SignalR!
@@ -40,19 +57,44 @@ class ElevatorDetailViewController: UIViewController, UITextFieldDelegate, UINav
         super.viewDidLoad()
         self.automaticallyAdjustsScrollViewInsets = false
         //scrollView.contentSize = self.view.bounds.size
-        let doYourPath = UIBezierPath(rect: CGRect(x: 220, y: 136, width: 150, height: 1))
+        let doYourPath = UIBezierPath(rect: CGRect(x: 225, y: 136, width: 140, height: 1))
         let layer = CAShapeLayer()
         layer.path = doYourPath.cgPath
-        layer.strokeColor = ExamplesDefaults.grayColor.cgColor
+        layer.strokeColor = ExamplesDefaults.darkTextColor.cgColor
         layer.fillColor = UIColor.lightGray.cgColor
+        
+        let backGray = UIColor(colorLiteralRed: 0.341, green: 0.345, blue: 0.341, alpha: 1)
+        
+        let floorGL = CAGradientLayer()
+        let floorDisplayColor = UIColor(colorLiteralRed: 243/255, green: 243/255, blue: 243/255, alpha: 1.0)
+        floorGL.colors = [ floorDisplayColor, UIColor.white]
+        FloorDisplay.backgroundColor = UIColor.white
+        floorGL.frame = FloorDisplay.frame
+        FloorDisplay.layer.insertSublayer(floorGL, at: 1)
+        FloorDisplay.layer.borderColor = UIColor.white.cgColor
+        FloorDisplay.layer.shadowColor = UIColor.black.cgColor
+        FloorDisplay.layer.shadowOpacity = 0.5
+        FloorDisplay.layer.shadowOffset = CGSize(width: 3, height: 3)
+        FloorDisplay.layer.shadowRadius = 3
+        FloorDisplay.layer.borderWidth = 2
+        
+
+    
+        graph1BackgroundImageView.backgroundColor = backGray
+        graph1BackgroundImageView.layer.cornerRadius = 8.0
+        graph1BackgroundImageView.clipsToBounds = true
+        graph2BackgroundImageView.backgroundColor = backGray
+        graph2BackgroundImageView.layer.cornerRadius = 8.0
+        graph3BackgroundImageView.backgroundColor = backGray
+        graph2BackgroundImageView.clipsToBounds = true
+        graph3BackgroundImageView.layer.cornerRadius = 8.0
+        graph3BackgroundImageView.clipsToBounds = true
         
         self.innerView.layer.addSublayer(layer)
         
         if let elevator = elevator {
-            navigationItem.title = elevator.Name
-            FloorDisplay.layer.borderColor = UIColor.lightGray.cgColor
-            FloorDisplay.layer.borderWidth = 2
             floorNameLabel.text = currentFloorName
+            navigationItem.title = elevator.Name
             if elevator.DoorsOpen {
                 leftElevatorDoorImage.image = #imageLiteral(resourceName: "back")
                 rightElevatorDoorImage.image = #imageLiteral(resourceName: "forward")
@@ -63,6 +105,11 @@ class ElevatorDetailViewController: UIViewController, UITextFieldDelegate, UINav
             else {
                 doorOpeningLabel.text = "Closed"
             }
+            setStatusIcons(status: elevator.Status!)
+            
+            
+            
+            
         }
         
             connection = SignalR("https://camelbacksignalrtest.azurewebsites.net")
@@ -91,6 +138,7 @@ class ElevatorDetailViewController: UIViewController, UITextFieldDelegate, UINav
                             self?.rightElevatorDoorImage.image = nil
                             self?.doorOpeningLabel.text = "Closed"
                         }
+                        self?.setStatusIcons(status: (e?.Status)!)
                     }
                 }
         }
@@ -217,7 +265,7 @@ class ElevatorDetailViewController: UIViewController, UITextFieldDelegate, UINav
             let yValues = ChartAxisValuesStaticGenerator.generateYAxisValuesWithChartPoints(chartPoints, minSegmentCount: 1.0, maxSegmentCount: 5, axisValueGenerator: {ChartAxisValueDouble($0, labelSettings: labelSettings)}, addPaddingSegmentIfEdge: false)
             
             let xModel = ChartAxisModel(axisValues: xValues)
-            let yModel = ChartAxisModel(axisValues: yValues, lineColor: ExamplesDefaults.grayColor)
+            let yModel = ChartAxisModel(axisValues: yValues, lineColor: ExamplesDefaults.darkTextColor)
             let chartFrame = ExamplesDefaults.chartFrame(self.innerView.bounds, chartType: chartType)
             
             let chartSettings = ExamplesDefaults.chartSettingsWithPanZoom
@@ -225,7 +273,7 @@ class ElevatorDetailViewController: UIViewController, UITextFieldDelegate, UINav
             let coordsSpace = ChartCoordsSpaceLeftBottomSingleAxis(chartSettings: chartSettings, chartFrame: chartFrame, xModel: xModel, yModel: yModel)
             let (xAxisLayer, yAxisLayer, innerFrame) = (coordsSpace.xAxisLayer, coordsSpace.yAxisLayer, coordsSpace.chartInnerFrame)
             
-            let lineModel = ChartLineModel(chartPoints: chartPoints, lineColor: ExamplesDefaults.grayColor, animDuration: 1, animDelay: 0)
+            let lineModel = ChartLineModel(chartPoints: chartPoints, lineColor: ExamplesDefaults.lightBlueColor, animDuration: 1, animDelay: 0)
             //let lineModel2 = ChartLineModel(chartPoints: chartPoints2, lineColor: UIColor.blue, animDuration: 1, animDelay: 0)
             let chartPointsLineLayer = ChartPointsLineLayer(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, lineModels: [lineModel/*, lineModel2*/], useView: false)
             
@@ -237,15 +285,20 @@ class ElevatorDetailViewController: UIViewController, UITextFieldDelegate, UINav
             let chartPointsTrackerLayer = ChartPointsLineTrackerLayer<ChartPoint, Any>(xAxis: xAxisLayer.axis, yAxis: yAxisLayer.axis, lines: [chartPoints/*, chartPoints2*/], lineColor: UIColor.black, animDuration: 1, animDelay: 2, settings: trackerLayerSettings) {chartPointsWithScreenLoc in
                 
                 currentPositionLabels.forEach{$0.removeFromSuperview()}
-                
-                for (index, chartPointWithScreenLoc) in chartPointsWithScreenLoc.enumerated() {
+                let labelDateFormatter = DateFormatter()
+                labelDateFormatter.dateFormat = "MM.dd.yyyy HH"
+                let labelDisplayDateFormatter = DateFormatter()
+                labelDisplayDateFormatter.dateFormat = "h a"
+                for (_, chartPointWithScreenLoc) in chartPointsWithScreenLoc.enumerated() {
                     
                     let label = UILabel()
-                    label.text = chartPointWithScreenLoc.chartPoint.description
+                    let labelDate = labelDateFormatter.date(from: chartPointWithScreenLoc.chartPoint.x.description)
+                    label.text = labelDisplayDateFormatter.string(from: labelDate!) + ": " + Int(round(chartPointWithScreenLoc.chartPoint.y.scalar)).description + " secs"
                     label.sizeToFit()
                     label.center = CGPoint(x: chartPointWithScreenLoc.screenLoc.x + label.frame.width / 2, y: chartPointWithScreenLoc.screenLoc.y + chartFrame.minY - label.frame.height / 2)
                     
-                    label.backgroundColor = index == 0 ? UIColor.gray : UIColor.blue
+                    //label.backgroundColor = index == 0 ? UIColor.gray : UIColor.blue
+                    label.backgroundColor = ExamplesDefaults.lightBlueColor
                     label.textColor = UIColor.white
                     
                     currentPositionLabels.append(label)
@@ -255,7 +308,7 @@ class ElevatorDetailViewController: UIViewController, UITextFieldDelegate, UINav
             
             let settings = ChartGuideLinesDottedLayerSettings(linesColor: UIColor.black, linesWidth: ExamplesDefaults.guidelinesWidth)
             let guidelinesLayer = ChartGuideLinesDottedLayer(xAxisLayer: xAxisLayer, yAxisLayer: yAxisLayer, settings: settings)
-            
+        
             DispatchQueue.main.async() {
                 // update some UI
                 let chart = Chart(
@@ -270,13 +323,13 @@ class ElevatorDetailViewController: UIViewController, UITextFieldDelegate, UINav
                         chartPointsTrackerLayer
                     ]
                 )
-                
+                chart.view.backgroundColor = UIColor.clear
                 self.innerView.addSubview(chart.view)
                 
                 if chartType == "averagewaittime" {
                     self.avgWaitChart = chart
-                    let avgWaitVal = round(((dateValues.popLast()?.value)! * 10)) / 10
-                    self.averageWaitLabel.text = "\(avgWaitVal)/hr"
+                    let avgWaitVal = round((dateValues.popLast()?.value)!)
+                    self.averageWaitLabel.text = "\(avgWaitVal)/s"
                 }
                 else if chartType == "runs" {
                     self.runsChart = chart
@@ -415,7 +468,7 @@ class ElevatorDetailViewController: UIViewController, UITextFieldDelegate, UINav
     }
     
     func createDateAxisValue(_ dateStr: String, readFormatter: DateFormatter, displayFormatter: DateFormatter) -> ChartAxisValue {
-        print(dateStr)
+        //print(dateStr)
         let date = readFormatter.date(from: dateStr)!
         let labelSettings = ChartLabelSettings(font: ExamplesDefaults.labelFont, rotation: 45, rotationKeep: .top)
         return MyMultiLabelAxisValue(date: date, formatter: displayFormatter, labelSettings: labelSettings)
@@ -449,9 +502,38 @@ class ElevatorDetailViewController: UIViewController, UITextFieldDelegate, UINav
         
         override var labels:[ChartAxisLabel] {
             return [
-                ChartAxisLabel(text: self.hour, settings: ChartLabelSettings(font: UIFont.systemFont(ofSize: 11), fontColor: UIColor.gray)),
-                ChartAxisLabel(text: self.dateString, settings: ChartLabelSettings(font: UIFont.systemFont(ofSize: 11), fontColor: ExamplesDefaults.grayColor)),
+                ChartAxisLabel(text: self.hour, settings: ChartLabelSettings(font: UIFont.systemFont(ofSize: 11), fontColor: ExamplesDefaults.darkTextColor)),
+                ChartAxisLabel(text: self.dateString, settings: ChartLabelSettings(font: UIFont.systemFont(ofSize: 11), fontColor: ExamplesDefaults.darkTextColor)),
             ]
         }
+    }
+    
+    func setStatusIcons(status: String) {
+        self.status1Image.image = #imageLiteral(resourceName: "status1Off")
+        self.status2Image.image = #imageLiteral(resourceName: "status2Off")
+        self.status3Image.image = #imageLiteral(resourceName: "status3Off")
+        self.status4Image.image = #imageLiteral(resourceName: "status4Off")
+        self.status5Image.image = #imageLiteral(resourceName: "status5Off")
+        self.status6Image.image = #imageLiteral(resourceName: "status6Off")
+        
+        switch(status){
+        case "status1":
+            status1Image.image = #imageLiteral(resourceName: "status1On")
+        case "status2":
+            status2Image.image = #imageLiteral(resourceName: "status2On")
+        case "status3":
+            status3Image.image = #imageLiteral(resourceName: "status3On")
+        case "status4":
+            status4Image.image = #imageLiteral(resourceName: "status4On")
+        case "status5":
+            status5Image.image = #imageLiteral(resourceName: "status5On")
+        case "status6":
+            status6Image.image = #imageLiteral(resourceName: "status6On")
+            
+        default:
+            status2Image.image = #imageLiteral(resourceName: "status2On")
+        }
+
+
     }
 }

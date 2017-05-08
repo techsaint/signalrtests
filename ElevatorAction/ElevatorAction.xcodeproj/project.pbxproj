@@ -11,6 +11,7 @@
 		D76ECE90BFC572D45BA9427B /* Pods_ElevatorAction.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3EC03CDFE4CAD119A23F992 /* Pods_ElevatorAction.framework */; };
 		E311AE531EB9201C006ACB8C /* MinAvgMaxFloor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E311AE521EB9201C006ACB8C /* MinAvgMaxFloor.swift */; };
 		E311AE571EBBCE09006ACB8C /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E311AE561EBBCE09006ACB8C /* LoginViewController.swift */; };
+		E311AE5A1EC0F6BC006ACB8C /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = E311AE591EC0F6BC006ACB8C /* Colors.swift */; };
 		E31681411EAAA50400FAC964 /* SwiftR.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E31681401EAAA50400FAC964 /* SwiftR.framework */; };
 		E37D386E1EAE8F3E007D66E3 /* Bank.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37D386D1EAE8F3E007D66E3 /* Bank.swift */; };
 		E37D38741EAFCD26007D66E3 /* ElevatorCallButtonControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = E37D38731EAFCD26007D66E3 /* ElevatorCallButtonControl.swift */; };
@@ -47,6 +48,7 @@
 		D3EC03CDFE4CAD119A23F992 /* Pods_ElevatorAction.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ElevatorAction.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E311AE521EB9201C006ACB8C /* MinAvgMaxFloor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MinAvgMaxFloor.swift; sourceTree = "<group>"; };
 		E311AE561EBBCE09006ACB8C /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		E311AE591EC0F6BC006ACB8C /* Colors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
 		E31681401EAAA50400FAC964 /* SwiftR.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftR.framework; path = "../../../Library/Developer/Xcode/DerivedData/ElevatorAction-axpydgdhmnpqnoegoaaqdlzffqcu/Build/Products/Debug-iphonesimulator/SwiftR/SwiftR.framework"; sourceTree = "<group>"; };
 		E37D386D1EAE8F3E007D66E3 /* Bank.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Bank.swift; sourceTree = "<group>"; };
 		E37D38731EAFCD26007D66E3 /* ElevatorCallButtonControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ElevatorCallButtonControl.swift; sourceTree = "<group>"; };
@@ -176,6 +178,7 @@
 				E37FF94D1EB287E90076F703 /* ExampleDefaults.swift */,
 				E37FF94F1EB39E170076F703 /* dateValue.swift */,
 				E311AE521EB9201C006ACB8C /* MinAvgMaxFloor.swift */,
+				E311AE591EC0F6BC006ACB8C /* Colors.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -193,6 +196,7 @@
 				E3F5AE141EA9087200BE8731 /* Resources */,
 				CF3C565A8E7AD136CF464428 /* [CP] Embed Pods Frameworks */,
 				D1D0FAFFA2419CF8AF963F74 /* [CP] Copy Pods Resources */,
+				E311AE581EBCCC3C006ACB8C /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -314,7 +318,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		CF3C565A8E7AD136CF464428 /* [CP] Embed Pods Frameworks */ = {
@@ -347,6 +351,19 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ElevatorAction/Pods-ElevatorAction-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		E311AE581EBCCC3C006ACB8C /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "FILE=\"${SRCROOT}/HockeySDK-iOS/BuildAgent\"\nif [ -f \"$FILE\" ]; then\n\"$FILE\"\nfi";
+		};
 		EBE29AB8CA5FCE315DE5BE6E /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -374,7 +391,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -385,6 +402,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E311AE571EBBCE09006ACB8C /* LoginViewController.swift in Sources */,
+				E311AE5A1EC0F6BC006ACB8C /* Colors.swift in Sources */,
 				E37FF94E1EB287E90076F703 /* ExampleDefaults.swift in Sources */,
 				E3F5AE411EA938D500BE8731 /* Floor.swift in Sources */,
 				E37D38781EB13815007D66E3 /* ElevatorDetailViewController.swift in Sources */,

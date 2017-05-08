@@ -1,8 +1,12 @@
 PODS:
+  - HockeySDK (4.1.5):
+    - HockeySDK/DefaultLib (= 4.1.5)
+  - HockeySDK/DefaultLib (4.1.5)
   - SwiftCharts (0.6)
   - SwiftR (0.13.0)
 
 DEPENDENCIES:
+  - HockeySDK (~> 4.1.5)
   - SwiftCharts (from `https://github.com/i-schuetz/SwiftCharts.git`)
   - SwiftR
 
@@ -16,9 +20,10 @@ CHECKOUT OPTIONS:
     :git: https://github.com/i-schuetz/SwiftCharts.git
 
 SPEC CHECKSUMS:
+  HockeySDK: 606b537bbfbe454ee440e92cc93bc634b3c77151
   SwiftCharts: 84f84c2a94a3f51f055eeaacd9b8dc3ada3380eb
   SwiftR: 340a0c3c6d665e8f243e4b57c8121e0d81f3a345
 
-PODFILE CHECKSUM: 66f0ffea5c26d4b92b449a75922af1859ede288f
+PODFILE CHECKSUM: 5b1a9f6ac8a681bf17d7490f04db90be27f54c5d
 
-COCOAPODS: 1.2.0
+COCOAPODS: 1.2.1

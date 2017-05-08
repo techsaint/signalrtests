@@ -40,7 +40,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     
     @IBOutlet weak var ElevatorCar2Image: UIImageView!
-     @IBOutlet weak var ElevatorCar2LeftDoorImage: UIImageView!
+    @IBOutlet weak var ElevatorCar2LeftDoorImage: UIImageView!
 
     @IBOutlet weak var ElevatorCar2RightDoorImage: UIImageView!
     
@@ -94,9 +94,11 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         elevatorTableView.delegate = self
         elevatorTableView.dataSource = self
         
+        //view.backgroundColor = UIColor(colorLiteralRed: 0.9414, green: 0.9375, blue: 0.9375, alpha: 1)
+        //tblMain.backgroundColor = UIColor(colorLiteralRed: 0.9414, green: 0.9375, blue: 0.9375, alpha: 1)
         
-        self.ElevatorCar1Image.backgroundColor = UIColor.lightGray
-        self.ElevatorCar2Image.backgroundColor = UIColor.lightGray
+        ElevatorCar1Image.backgroundColor = UIColor(colorLiteralRed: 0.92, green: 0.91, blue: 0.91, alpha: 1)
+        ElevatorCar2Image.backgroundColor = UIColor(colorLiteralRed: 0.92, green: 0.91, blue: 0.91, alpha: 1)
         //NotificationCenter.default.addObserver(self, selector: #selector(reloadTableData), name: .reload, object: nil)
         
         connection = SignalR("https://camelbacksignalrtest.azurewebsites.net")
@@ -116,11 +118,49 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
                 self?.header2Label.setTitle(self?.building.Elevators[1].Name, for: UIControlState.normal)
                 self?.elevatorTableView.reloadData()
             }
+            let Open1 = b.Elevators[0].Direction
+            let Open2 = b.Elevators[1].Direction
+            
+            if Open1 == nil {
+                self?.ElevatorCar1Image.image = #imageLiteral(resourceName: "car")
+            }
+            else{
+                if Open1! {
+                    self?.ElevatorCar1Image.image = #imageLiteral(resourceName: "carUp")
+                }
+                else {
+                    self?.ElevatorCar1Image.image = #imageLiteral(resourceName: "carDown")
+                }
+            }
+            
+            if Open2 == nil{
+                self?.ElevatorCar2Image.image = #imageLiteral(resourceName: "car")
+            }
+            else{
+                if Open2! {
+                    self?.ElevatorCar2Image.image = #imageLiteral(resourceName: "carUp")
+                }
+                else {
+                    self?.ElevatorCar2Image.image = #imageLiteral(resourceName: "carDown")
+                }
+            }
+
+            
             let shouldShut1 = (self?.previousOpen1)! && !b.Elevators[0].DoorsOpen
             let shouldShut2 = (self?.previousOpen2)! && !b.Elevators[1].DoorsOpen
             let shouldShut = shouldShut1 || shouldShut2
             
+            if shouldShut1 {
+                self?.ElevatorCar1LeftDoorImage.image = #imageLiteral(resourceName: "forward")
+                self?.ElevatorCar2RightDoorImage.image = #imageLiteral(resourceName: "back")
+            }
+            if shouldShut2 {
+                self?.ElevatorCar2LeftDoorImage.image = #imageLiteral(resourceName: "forward")
+                self?.ElevatorCar2RightDoorImage.image = #imageLiteral(resourceName: "back")
+            }
+            
             if(shouldShut){
+                
                 UIView.animate(withDuration: 1, delay: 0, options: .curveEaseOut, animations: {
                     if shouldShut1{
                         self?.ElevatorCar1LeftDoorImage.center.x += CGFloat(20)
@@ -155,6 +195,16 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
             let shouldOpen1 = !(self?.previousOpen1)! && b.Elevators[0].DoorsOpen
             let shouldOpen2 = !(self?.previousOpen2)! && b.Elevators[1].DoorsOpen
             let shouldOpen = shouldOpen1 || shouldOpen2
+            
+            if shouldOpen1 {
+                self?.ElevatorCar1LeftDoorImage.image = #imageLiteral(resourceName: "back")
+                self?.ElevatorCar2RightDoorImage.image = #imageLiteral(resourceName: "forward")
+            }
+            if shouldOpen2 {
+                self?.ElevatorCar2LeftDoorImage.image = #imageLiteral(resourceName: "back")
+                self?.ElevatorCar2RightDoorImage.image = #imageLiteral(resourceName: "forward")
+            }
+
             
             if(shouldOpen){
                 UIView.animate(withDuration: 1, delay: 0, options: .curveEaseOut, animations: {
@@ -236,13 +286,15 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.isNavigationBarHidden = true
+        self.navigationController?.navigationBar.barTintColor = UIColor(colorLiteralRed: 0.121, green: 0.13, blue: 0.318, alpha: 1)
+        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor(colorLiteralRed: 0.9414, green: 0.9375, blue: 0.9375, alpha: 1)]
+        //navigationItem.hidesBackButton = true
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        self.navigationController?.isNavigationBarHidden = false
-        
+        //self.navigationController?.isNavigationBarHidden = false
+        //navigationItem.hidesBackButton = false
     }
     
     override func didReceiveMemoryWarning() {
@@ -259,7 +311,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
             fatalError("The dequeued cell is not an instance of LiveFloorTableViewCell.")
         }
         let floor = building.Floors[(building.Floors.count - (indexPath.row + 1))]
-            
+        cell.backgroundColor = UIColor.clear
         cell.floorNameLabel.text = (floor?.Title)!
         cell.Elevator1CallControl.upCalled = (floor?.Banks[1]?.UpStatus)!
         cell.Elevator1CallControl.downCalled = (floor?.Banks[1]?.DownStatus)!
@@ -303,6 +355,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         }
         let backItem = UIBarButtonItem()
         backItem.title = "Back"
+        backItem.setTitleTextAttributes([NSForegroundColorAttributeName: UIColor(colorLiteralRed: 118/255, green: 201/255, blue: 251/255, alpha: 1)], for: UIControlState.normal)
         navigationItem.backBarButtonItem = backItem
         elevatorDetailViewController.elevator = selectedElevator
         elevatorDetailViewController.currentFloorName = self.building.Floors[selectedElevator.CurrentFloor]?.Title
@@ -310,9 +363,9 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     
     private func testDates() {
-        let url = URL(string: "https://camelbacksignalrtest.azurewebsites.net/telemetry/averagewaittime/24hours")
+        let url = URL(string: "https://camelbacksignalrtest.azurewebsites.net/telemetry/runs/24hours")
         let task = URLSession.shared.dataTask(with: url!) {(data, response, error) in
-            //print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue) ?? "Service call failed")
+            print(NSString(data: data!, encoding: String.Encoding.utf8.rawValue) ?? "Service call failed")
         }
         task.resume()
     }

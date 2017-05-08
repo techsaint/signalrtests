@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>HockeySDK-HockeySDKResources.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-ElevatorAction.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -27,12 +32,7 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>3ECC22ACCA0281AD839840C7729ADEC6</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>55EBC828C0B578AEAC96588C0CC956AF</key>
+		<key>274EAF1F62A2B0700C2381D2DF304103</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -42,7 +42,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8EF0E67CDCADF23C76D17BB94B311CC4</key>
+		<key>86A426414985A3A1B8244A7CD22013CB</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>8BF5E7CADC2DDF7D63C7378F4917C917</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>EB9AD825427F216B54E693242E671FA1</key>
 		<dict>
 			<key>primary</key>
 			<true/>

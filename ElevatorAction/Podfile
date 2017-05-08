@@ -7,7 +7,8 @@ target 'ElevatorAction' do
 
   # Pods for ElevatorAction 
 	pod ‘SwiftR’ 
-	pod ’SwiftCharts’, :git => 'https://github.com/i-schuetz/SwiftCharts.git' 
+	pod ’SwiftCharts’, :git => 'https://github.com/i-schuetz/SwiftCharts.git'
+	pod 'HockeySDK', '~> 4.1.5' 
 
   target 'ElevatorActionTests' do
     inherit! :search_paths

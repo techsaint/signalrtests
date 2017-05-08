@@ -85,7 +85,7 @@ struct ExamplesDefaults {
     
     static var labelSettings: ChartLabelSettings {
         var settings = ChartLabelSettings(font: ExamplesDefaults.labelFont)
-        settings.fontColor = ExamplesDefaults.grayColor
+        settings.fontColor = ExamplesDefaults.darkTextColor
         return settings
     }
     
@@ -119,5 +119,12 @@ struct ExamplesDefaults {
     
     static var medGrayColor: UIColor {
         return UIColor(red: CGFloat(0.7), green: CGFloat(0.7), blue: CGFloat(0.7), alpha: CGFloat(1.0))
+    }
+    static var darkTextColor: UIColor {
+        return UIColor(red: CGFloat(0.11), green: CGFloat(0.11), blue: CGFloat(0.11), alpha: CGFloat(1.0))
+    }
+    
+    static var lightBlueColor: UIColor{
+        return UIColor(red: CGFloat(0.216), green: CGFloat(0.549), blue: CGFloat(0.753), alpha: CGFloat(1.0))
     }
 }
